@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+		<LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+		<WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+		<TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
+	</PropertyGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+		<Keyword>Win32Proj</Keyword>
+		<RootNamespace>kinectV2DepthRecorder</RootNamespace>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v141</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<PlatformToolset>v141</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v141</PlatformToolset>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+		<ConfigurationType>Application</ConfigurationType>
+		<CharacterSet>Unicode</CharacterSet>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<PlatformToolset>v141</PlatformToolset>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+		<Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<TargetName>$(ProjectName)_debug</TargetName>
+		<LinkIncremental>true</LinkIncremental>
+		<GenerateManifest>true</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutDir>bin\</OutDir>
+		<IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+		<LinkIncremental>false</LinkIncremental>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectV2\libs;..\..\..\addons\ofxKinectV2\libs\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\CL;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\src;..\..\..\addons\ofxKinectV2\libs\libturbojpeg;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\include;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\linuxarmv6l;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os;..\..\..\addons\ofxKinectV2\libs\libusb\lib;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl;..\..\..\addons\ofxKinectV2\libs\opencl\include;..\..\..\addons\ofxKinectV2\libs\opencl\include\CL;..\..\..\addons\ofxKinectV2\libs\opencl\lib;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\protonect;..\..\..\addons\ofxKinectV2\libs\protonect\src;..\..\..\addons\ofxKinectV2\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<ObjectFileName>$(IntDir)</ObjectFileName>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);turbojpeg-static.lib;libusb-1.0.lib;OpenCL.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug\dll;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<Optimization>Disabled</Optimization>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectV2\libs;..\..\..\addons\ofxKinectV2\libs\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\CL;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\src;..\..\..\addons\ofxKinectV2\libs\libturbojpeg;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\include;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\linuxarmv6l;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os;..\..\..\addons\ofxKinectV2\libs\libusb\lib;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl;..\..\..\addons\ofxKinectV2\libs\opencl\include;..\..\..\addons\ofxKinectV2\libs\opencl\include\CL;..\..\..\addons\ofxKinectV2\libs\opencl\lib;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\protonect;..\..\..\addons\ofxKinectV2\libs\protonect\src;..\..\..\addons\ofxKinectV2\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<ObjectFileName>$(IntDir)</ObjectFileName>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);turbojpeg-static.lib;libusb-1.0.lib;OpenCL.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug\dll;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectV2\libs;..\..\..\addons\ofxKinectV2\libs\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\CL;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\src;..\..\..\addons\ofxKinectV2\libs\libturbojpeg;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\include;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\linuxarmv6l;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os;..\..\..\addons\ofxKinectV2\libs\libusb\lib;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl;..\..\..\addons\ofxKinectV2\libs\opencl\include;..\..\..\addons\ofxKinectV2\libs\opencl\include\CL;..\..\..\addons\ofxKinectV2\libs\opencl\lib;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\protonect;..\..\..\addons\ofxKinectV2\libs\protonect\src;..\..\..\addons\ofxKinectV2\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<ObjectFileName>$(IntDir)</ObjectFileName>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);turbojpeg-static.lib;libusb-1.0.lib;OpenCL.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<WarningLevel>Level3</WarningLevel>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectV2\libs;..\..\..\addons\ofxKinectV2\libs\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\CL;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb;..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2;..\..\..\addons\ofxKinectV2\libs\libfreenect2\src;..\..\..\addons\ofxKinectV2\libs\libturbojpeg;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\include;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\linuxarmv6l;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb;..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os;..\..\..\addons\ofxKinectV2\libs\libusb\lib;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\Win32\Release\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Debug\dll;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl;..\..\..\addons\ofxKinectV2\libs\opencl\include;..\..\..\addons\ofxKinectV2\libs\opencl\include\CL;..\..\..\addons\ofxKinectV2\libs\opencl\lib;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\Win32;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64;..\..\..\addons\ofxKinectV2\libs\protonect;..\..\..\addons\ofxKinectV2\libs\protonect\src;..\..\..\addons\ofxKinectV2\src</AdditionalIncludeDirectories>
+			<CompileAs>CompileAsCpp</CompileAs>
+			<ObjectFileName>$(IntDir)</ObjectFileName>
+		</ClCompile>
+		<Link>
+			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+			<SubSystem>Console</SubSystem>
+			<OptimizeReferences>true</OptimizeReferences>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<RandomizedBaseAddress>false</RandomizedBaseAddress>
+			<AdditionalDependencies>%(AdditionalDependencies);turbojpeg-static.lib;libusb-1.0.lib;OpenCL.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxKinectV2\libs\libturbojpeg\lib\vs\x64\Release;..\..\..\addons\ofxKinectV2\libs\libusb\lib\vs\x64\Release\dll;..\..\..\addons\ofxKinectV2\libs\opencl\lib\vs\x64</AdditionalLibraryDirectories>
+		</Link>
+		<PostBuildEvent />
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="src\main.cpp" />
+		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\src\ofxKinectV2.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\allocator.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\command_transaction.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\cpu_depth_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\depth_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\depth_packet_stream_parser.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\event_loop.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\flextGL.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\frame_listener_impl.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\libfreenect2.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\logging.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\opencl_depth_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\opencl_kde_depth_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\opengl_depth_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\packet_pipeline.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\registration.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\resource.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\rgb_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\rgb_packet_stream_parser.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\transfer_pool.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\turbo_jpeg_rgb_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\usb_control.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\vt_rgb_packet_processor.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxKinectV2\libs\protonect\src\ofProtonect.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\src\ofxKinectV2.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\CL\cl.hpp" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\allocator.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\async_packet_processor.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\data_callback.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\depth_packet_processor.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\depth_packet_stream_parser.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\logging.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\packet_processor.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol\command.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol\command_transaction.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol\response.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\protocol\usb_control.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\resource.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\rgb_packet_processor.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\rgb_packet_stream_parser.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\threading.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb\event_loop.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\internal\libfreenect2\usb\transfer_pool.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\color_settings.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\config.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\export.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\frame_listener.hpp" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\frame_listener_impl.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\led_settings.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\libfreenect2.hpp" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\logger.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\packet_pipeline.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\registration.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\include\libfreenect2\resources.inc.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libfreenect2\src\flextGL.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libturbojpeg\include\turbojpeg.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\hotplug.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\libusb.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\libusbi.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\darwin_usb.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\linux_usbfs.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\poll_posix.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\poll_windows.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\threads_posix.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\threads_windows.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\wince_usb.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\windows_common.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\os\windows_usb.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\version.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\libusb\include\libusb\version_nano.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl.hpp" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_d3d10.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_d3d10_ext.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_d3d11.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_d3d11_ext.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_d3d9_ext.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_dx9_media_sharing.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_egl.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_ext.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_gl.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_gl_ext.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\cl_platform.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\opencl\include\CL\opencl.h" />
+		<ClInclude Include="..\..\..\addons\ofxKinectV2\libs\protonect\src\ofProtonect.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+			<Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc">
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+		</ResourceCompile>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties RESOURCE_FILE="icon.rc" />
+		</VisualStudio>
+	</ProjectExtensions>
+</Project>
