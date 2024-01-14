@@ -1,1 +1,19 @@
-﻿
+﻿  ofApp.cpp
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(326): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(331): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(912): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(90): warning C4267: 'inicializando': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(91): warning C4267: 'inicializando': conversão de 'size_t' para 'int', possível perda de dados
+  kinectV2DepthRecorder.vcxproj -> C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\kinectV2DepthRecorder_debug.exe
+  
+  	                   2	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\fmodex\lib\vs\x64\
+  	  *Arquivo EXTRA		 6942208	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\FreeImage.dll
+  	  *Arquivo EXTRA		  147968	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\libusb-1.0.dll
+  
+  	                   1	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\FreeImage\lib\vs\x64\
+  	  *Arquivo EXTRA		 1503232	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\fmodex64.dll
+  	  *Arquivo EXTRA		 1552384	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\fmodexL64.dll
+  	  *Arquivo EXTRA		  147968	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\libusb-1.0.dll

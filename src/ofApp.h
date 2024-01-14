@@ -13,7 +13,7 @@ public:
     void update() override;
     void draw() override;
 
-    void keyPressed(int key) override;
+    //void keyPressed(int key) override;
 
     void drawTextureAtRowAndColumn(const std::string& title,
         const ofTexture& tex,
@@ -37,4 +37,24 @@ public:
     ofEasyCam cam;
     ofMesh pointCloud;
     bool showPointCloud = false;
+
+    void convert16BitTo2Channel8bit(unsigned short* in, int in_size, unsigned char* out); // not used
+    void convert16BitTo3Channel8bit(unsigned short* in, int in_size, unsigned char* out);
+    void convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsigned char* out);
+    void convert3Channel8bitTo32bit(unsigned char* in, int in_size, unsigned long int* out);
+    void testConversion32bitTo3C8bit();
+
+    unsigned char* depthFrameRGB;
+    ofImage depthOFImage;
+    unsigned long int* RawPixelsInt;
+    ofFloatPixels RawPixelsFloat;
+    unsigned char* RawPixelsChar;
+    unsigned long int* revertedRawPixelsInt;
+    ofPixels pixelsFromDepthOFImage;
+
+    void keyReleased(int key);
+    int GMult;
+    int GMult2;
+    int GMult3;
+
 };

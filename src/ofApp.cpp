@@ -35,6 +35,13 @@ void ofApp::setup()
     ksettings.config.MinDepth = 0.5;
     ksettings.config.MaxDepth = 8.0;
 
+    int h = 424;
+    int w = 512;
+    depthFrameRGB = new unsigned char[w * h * 3];
+    revertedRawPixelsInt = new unsigned long int[h * w];
+
+    //depthOFImage.allocate(w, h, OF_IMAGE_COLOR);
+
     //****************************************//
     // example settings for just getting the depth stream //
 //    ksettings.enableRGB = false;
@@ -53,12 +60,16 @@ void ofApp::setup()
     }
 
     panel.loadFromFile("settings.xml");
+    GMult = 1;
+    GMult2 = 1;
+    GMult3 = 1;
 
 }
 
 
 void ofApp::update()
 {
+
     for (int d = 0; d < kinects.size(); d++)
     {
         kinects[d]->update();
@@ -68,12 +79,31 @@ void ofApp::update()
             if (kinects[d]->isRGBEnabled()) texRGB[d].loadData(kinects[d]->getPixels());
             if (kinects[d]->getRegisteredPixels().getWidth() > 10) texRGBRegistered[d].loadData(kinects[d]->getRegisteredPixels());
             if (kinects[d]->isIREnabled()) texIR[d].loadData(kinects[d]->getIRPixels());
-            if (kinects[d]->isDepthEnabled()) texDepth[d].loadData(kinects[d]->getDepthPixels());
+            //if (kinects[d]->isDepthEnabled()) texDepth[d].loadData(kinects[d]->getDepthPixels());
 
-            ofPixels pixel = kinects[d]->getDepthPixels();
-            int chanels = pixel.getNumChannels();
-            int bits = pixel.getBitsPerChannel();
-            int bitPix = pixel.getBitsPerPixel();
+            if (kinects[d]->isDepthEnabled()) {
+
+                
+                RawPixelsFloat = kinects[d]->getRawDepthPixels();
+                RawPixelsInt = reinterpret_cast<unsigned long int*>(RawPixelsFloat.getData());
+          
+                int h = RawPixelsFloat.getHeight();
+                int w = RawPixelsFloat.getWidth();
+
+                this->convert32BitTo3Channel8bit(RawPixelsInt, w * h, depthFrameRGB);
+                depthOFImage.setFromPixels(depthFrameRGB, w, h, OF_IMAGE_COLOR);
+
+
+                // Reversion
+                //pixelsFromDepthOFImage = depthOFImage.getPixels();
+                //this->convert3Channel8bitTo32bit(pixelsFromDepthOFImage.getData(), h * w, revertedRawPixelsInt);
+                //cout << RawPixelsInt[1000] << "," << revertedRawPixelsInt[1000] << endl;
+
+                texDepth[d].loadData(depthOFImage.getPixels());
+
+
+            }
+
 
             if (showPointCloud)
             {
@@ -92,8 +122,117 @@ void ofApp::update()
 }
 
 
+void ofApp::keyReleased(int key) {
+    //
+    //	Multiplier of the green channel for the depth video:
+
+    if (key == 't') {
+        GMult++;
+        std::cout << "channel 1 multiplier: " << GMult << std::endl;
+    }
+    else if (key == 'y') {
+        if (GMult > 1) {
+            GMult--;
+            std::cout << "channel 1 multiplier: " << GMult << std::endl;
+        }
+    }
+    else if (key == 'b') {
+        GMult2++;
+        std::cout << "channel 2 multiplier: " << GMult2 << std::endl;
+    }
+
+    else if (key == 'n') {
+        if (GMult2 > 1) {
+            GMult2--;
+            std::cout << "channel 2 multiplier: " << GMult2 << std::endl;
+        }
+    }
+    else if (key == 'g') {
+        GMult3++;
+        std::cout << "channel 3 multiplier: " << GMult3 << std::endl;
+    }
+    else if (key == 'h') {
+        if (GMult3 > 1) {
+            GMult3--;
+            std::cout << "channel 3 multiplier: " << GMult3 << std::endl;
+        }
+    }
+
+}
+
+void ofApp::convert16BitTo2Channel8bit(unsigned short* in, int in_size, unsigned char* out)
+{
+    for (int i = 0; i < in_size; i++) {
+        out[i * 2] = static_cast<unsigned char>(in[i] & 0xFF); // lower byte
+        out[i * 2 + 1] = static_cast<unsigned char>((in[i] >> 8) & 0xFF); // higher byte
+    }
+}
+void ofApp::convert16BitTo3Channel8bit(unsigned short* in, int in_size, unsigned char* out)
+{
+    
+    for (int i = 0; i < in_size; i++) {
+        out[i * 3] = static_cast<unsigned char>((in[i]) & 0xFF); // lower byte
+        out[i * 3 + 1] = GMult * static_cast<unsigned char>((in[i] >> 8) & 0xFF); // higher byte
+        out[i * 3 + 2] = 0;
+    }
+}
+
+void ofApp::convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsigned char* out)
+{
+    // Input has 8 bytes, only last two ar used.
+    // The output order will be (2th byte, 3th byte, 0)
+ 
+    for (int i = 0; i < in_size; i++) {
+        
+        out[i * 3 + 0] = GMult * static_cast<unsigned char>(((in[i]>>16) & 0xFF)); // lower byte
+        // 0 to 69
+        out[i * 3 + 1] = GMult2 * static_cast<unsigned char>((in[i] >> 24) & 0xFF); // higher byte
+        out[i * 3 + 2] = 0;
+    }
+
+}
+
+void ofApp::convert3Channel8bitTo32bit(unsigned char* in, int out_size, unsigned long int* out) {
+
+    for (int i = 0; i < out_size; i++) {
+        out[i] = static_cast<unsigned long int>(in[i * 3] << 16 | in[i * 3 + 1] << 24 | 0 | 0);
+    }
+    
+}
+
+
+
+void ofApp::testConversion32bitTo3C8bit() {
+
+    // 32 bit from kinect
+    unsigned long int inputKinect[2] = { (unsigned long int)4294901760, (unsigned long int)(4294901760) };
+    cout << "kinect 32bits input " << inputKinect[0] << "," << inputKinect[1] << endl;
+
+
+    // convert into 3 channel 8 bit
+    unsigned char* outkinect;
+    outkinect = new unsigned char[3 * 2];
+
+    this->convert32BitTo3Channel8bit(inputKinect, 2, outkinect);
+    for (size_t i = 0; i < 2; i++)
+    {
+        cout << "32bit para 3C8bit: " << (int)outkinect[i * 3 + 1] << "," << (int)outkinect[i * 3] << "," << (int)outkinect[i * 3 + 2] << endl;
+    }
+
+
+    unsigned long int* reversedInKinect;
+    reversedInKinect = new unsigned long int[2];
+    // convert into single 32bit channel
+    this->convert3Channel8bitTo32bit(outkinect, 2, reversedInKinect);
+    cout << "Reveted 32 bits: " << reversedInKinect[0] << "," << reversedInKinect[1] << endl;
+
+}
+
+
 void ofApp::draw()
 {
+
+    //depthOFImage.draw(0, 0);
     if (!showPointCloud && currentKinect < texRGB.size())
     {
         drawTextureAtRowAndColumn("RGB Pixels",
@@ -129,18 +268,18 @@ void ofApp::draw()
     panel.draw();
 }
 
-
-void ofApp::keyPressed(int key)
-{
-    if (key == ' ')
-    {
-        currentKinect = (currentKinect + 1) % kinects.size();
-    }
-    else if (key == 'p')
-    {
-        showPointCloud = !showPointCloud;
-    }
-}
+//
+//void ofApp::keyPressed(int key)
+//{
+//    if (key == ' ')
+//    {
+//        currentKinect = (currentKinect + 1) % kinects.size();
+//    }
+//    else if (key == 'p')
+//    {
+//        showPointCloud = !showPointCloud;
+//    }
+//}
 
 
 void ofApp::drawTextureAtRowAndColumn(const std::string& title,
