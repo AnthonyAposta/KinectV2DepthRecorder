@@ -1,0 +1,44 @@
+﻿  ofApp.cpp
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(326): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(331): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(912): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(146): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(178): warning C4996: 'ofPixels_<unsigned char>::getPixels': Use getData instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofpixels.h(312): note: consulte a declaração de 'ofPixels_<unsigned char>::getPixels'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(185): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(186): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(196): warning C4996: 'ofPixels_<unsigned char>::getPixels': Use getData instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofpixels.h(312): note: consulte a declaração de 'ofPixels_<unsigned char>::getPixels'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(203): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(204): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(327): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1320): warning C4267: 'argumento': conversão de 'size_t' para 'ofIndexType', possível perda de dados
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1272): note: ao compilar a função membro '<Desconhecido>' de classe <Desconhecido>
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(210): note: consulte a referência à instanciação da função modelo 'void ofMesh_<ofDefaultVertexType,ofDefaultNormalType,ofDefaultColorType,ofDefaultTexCoordType>::save(const boost::filesystem::path &,bool) const' que está sendo compilada
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\of3dprimitives.h(71): note: consulte a referência à instanciação '<Desconhecido>' de classe <Desconhecido> que está sendo compilada
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1335): warning C4267: 'argumento': conversão de 'size_t' para 'ofIndexType', possível perda de dados
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1342): warning C4267: 'argumento': conversão de 'size_t' para 'ofIndexType', possível perda de dados
+     Criando biblioteca bin\kinectV2DepthRecorder.lib e objeto bin\kinectV2DepthRecorder.exp
+  Gerando código
+  0 of 617 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finalizada a geração de código
+  kinectV2DepthRecorder.vcxproj -> C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\kinectV2DepthRecorder.exe
+  
+  	                   2	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\fmodex\lib\vs\x64\
+  	  *Arquivo EXTRA		 6942208	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\FreeImage.dll
+  	  *Arquivo EXTRA		  147968	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\libusb-1.0.dll
+  
+  	                   1	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\FreeImage\lib\vs\x64\
+  	  *Arquivo EXTRA		 1503232	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\fmodex64.dll
+  	  *Arquivo EXTRA		 1552384	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\fmodexL64.dll
+  	  *Arquivo EXTRA		  147968	C:\Users\antho\Documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myApps\kinectV2DepthRecorder\bin\libusb-1.0.dll

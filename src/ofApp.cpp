@@ -1,5 +1,4 @@
 #include "ofApp.h"
-
 //NOTE: if you are unable to connect to your device on OS X, try unplugging and replugging in the power, while leaving the USB connected.
 //ofxKinectV2 will only work if the NUI Sensor shows up in the Superspeed category of the System Profiler in the USB section.
 
@@ -9,11 +8,14 @@
 
 void ofApp::setup()
 {
+    ofSetFrameRate(30);
+    ofSetVerticalSync(true);
+    ofBackground(100);
+    
     // Uncomment for verbose info from libfreenect2
     ofSetLogLevel(OF_LOG_VERBOSE);
 
-    ofBackground(0);
-
+    #pragma region KinectConfigs
     //see how many devices we have.
     ofxKinectV2 tmp;
     std::vector <ofxKinectV2::KinectDeviceInfo> deviceList = tmp.getDeviceList();
@@ -35,20 +37,13 @@ void ofApp::setup()
     ksettings.config.MinDepth = 0.5;
     ksettings.config.MaxDepth = 8.0;
 
-    int h = 424;
-    int w = 512;
-    depthFrameRGB = new unsigned char[w * h * 3];
-    revertedRawPixelsInt = new unsigned long int[h * w];
-
-    //depthOFImage.allocate(w, h, OF_IMAGE_COLOR);
-
     //****************************************//
     // example settings for just getting the depth stream //
-//    ksettings.enableRGB = false;
-//    ksettings.enableRGBRegistration = false;
-//    ksettings.enableIR = false;
-//    // use enableDepthRegistration if you would like to use getWorldCoordinateAt
-//    ksettings.enableDepthRegistration = true;
+    //    ksettings.enableRGB = false;
+    //    ksettings.enableRGBRegistration = false;
+    //    ksettings.enableIR = false;
+    //    // use enableDepthRegistration if you would like to use getWorldCoordinateAt
+    //    ksettings.enableDepthRegistration = true;
     //****************************************//
 
     // Note you don't have to use ofxKinectV2 as a shared pointer, but if you
@@ -60,16 +55,74 @@ void ofApp::setup()
     }
 
     panel.loadFromFile("settings.xml");
-    GMult = 1;
-    GMult2 = 1;
-    GMult3 = 1;
 
+    #pragma endregion
+
+    h = 424;
+    w = 512;
+    depthFrameRGB = new unsigned char[w * h * 3];
+    revertedRawPixelsInt = new unsigned long int[h * w];
+
+    depthOFImage.allocate(w, h, OF_IMAGE_COLOR);
+    RGBOFImage.allocate(w, h, OF_IMAGE_COLOR);
+
+    //	Spout - Initialise the Spout sender
+    spoutSenderDepth.init("DepthVideo", w, h);// , OF_PIXELS_RGB);
+    spoutSenderRGB.init("RGBVideo", w, h);// , OF_PIXELS_RGB);
+
+    // set pointcloud primitive
+    pointCloud.setMode(OF_PRIMITIVE_POINTS);
+
+    //// Set GUIs parameters
+
+    // pointcloud gui
+    unsigned short maxDistaceBitValue = 13000;
+    unsigned short minDistaceBitValue = 11381;
+
+    recordingGui.setup("Near/Far clipping");
+    recordingGui.add(minDistanceBits.set("Near", minDistaceBitValue, minDistaceBitValue, maxDistaceBitValue));
+    recordingGui.add(maxDistanceBits.set("Far", maxDistaceBitValue, minDistaceBitValue, maxDistaceBitValue));
+
+    // playbakc gui
+    playbackGui.setup("Near/Far clipping");
+    playbackGui.add(NearMeters.set("Near", 0.5, 0.5, 4.5));
+    playbackGui.add(FarMeters.set("Far", 4.5, 0.5, 4.5));
+
+    playbackGui.add(LowMeters.set("Low", 2.5, -2.5, 2.5));
+    playbackGui.add(HighMeters.set("High", -2.5, -2.5, 2.5));
+
+    playbackGui.add(LeftMeters.set("Left", -2.5, -2.5, 2.5));
+    playbackGui.add(RightMeters.set("Right", 2.5, -2.5, 2.5));
 }
 
-
+// Update methods
 void ofApp::update()
 {
 
+    if (showDebugScreen) {
+
+        updateFromKinect();
+    }
+    else if (showPointCloud)
+    {
+        updateFromKinect();
+    }
+    else if (showPlaybackScreen)
+    {
+        if (!onSavingObj)
+        {
+            updateFromVideoFile();
+        }
+        else
+        {
+            updateFromVideoFileOnSaving();
+        }
+        
+    }
+}
+
+void ofApp::updateFromKinect() {
+    
     for (int d = 0; d < kinects.size(); d++)
     {
         kinects[d]->update();
@@ -83,100 +136,91 @@ void ofApp::update()
 
             if (kinects[d]->isDepthEnabled()) {
 
-                
                 RawPixelsFloat = kinects[d]->getRawDepthPixels();
                 RawPixelsInt = reinterpret_cast<unsigned long int*>(RawPixelsFloat.getData());
-          
-                int h = RawPixelsFloat.getHeight();
-                int w = RawPixelsFloat.getWidth();
 
+                // Transform
                 this->convert32BitTo3Channel8bit(RawPixelsInt, w * h, depthFrameRGB);
                 depthOFImage.setFromPixels(depthFrameRGB, w, h, OF_IMAGE_COLOR);
+                
+                this->convert3Channel8bitTo32bit(depthOFImage.getPixelsRef().getData(), w * h, revertedRawPixelsInt);
 
+                // Revert
+                cropDepthData(revertedRawPixelsInt);
+                this->convert32BitTo3Channel8bit(revertedRawPixelsInt, w * h, depthFrameRGB);
+                depthOFImage.setFromPixels(depthFrameRGB, w, h, OF_IMAGE_COLOR);
 
-                // Reversion
-                //pixelsFromDepthOFImage = depthOFImage.getPixels();
-                //this->convert3Channel8bitTo32bit(pixelsFromDepthOFImage.getData(), h * w, revertedRawPixelsInt);
-                //cout << RawPixelsInt[1000] << "," << revertedRawPixelsInt[1000] << endl;
+                // Get RGB image
+                
+                RGBImage.loadData(kinects[d]->getRegisteredPixels());
+                //RGBOFImage.setFromPixels();
+                //RGBOFImage.update();
+
+                spoutSenderDepth.send(depthOFImage.getTexture());
+                spoutSenderRGB.send(RGBImage);
 
                 texDepth[d].loadData(depthOFImage.getPixels());
-
-
             }
-
 
             if (showPointCloud)
             {
-                pointCloud.clear();
-                for (std::size_t x = 0; x < texRGBRegistered[d].getWidth(); x++)
-                {
-                    for (std::size_t y = 0; y < texRGBRegistered[d].getHeight(); y++)
-                    {
-                        pointCloud.addVertex(kinects[d]->getWorldCoordinateAt(x, y));
-                        pointCloud.addColor(kinects[d]->getRegisteredPixels().getColor(x, y));
-                    }
-                }
+                fillVboMesh(revertedRawPixelsInt, kinects[d]->getRegisteredPixels(), h, w);
             }
         }
     }
 }
 
+void ofApp::updateFromVideoFile() {
 
-void ofApp::keyReleased(int key) {
-    //
-    //	Multiplier of the green channel for the depth video:
+    if (depthVidPlayer.isLoaded()) {
 
-    if (key == 't') {
-        GMult++;
-        std::cout << "channel 1 multiplier: " << GMult << std::endl;
-    }
-    else if (key == 'y') {
-        if (GMult > 1) {
-            GMult--;
-            std::cout << "channel 1 multiplier: " << GMult << std::endl;
-        }
-    }
-    else if (key == 'b') {
-        GMult2++;
-        std::cout << "channel 2 multiplier: " << GMult2 << std::endl;
-    }
+        depthVidPlayer.update();
+        unsigned char* videoFrameRGB = depthVidPlayer.getPixelsRef().getPixels();
+        depthOFImage.setFromPixels(videoFrameRGB, w * 2, h, OF_IMAGE_COLOR);
+        RGBOFImage.setFromPixels(videoFrameRGB, w * 2, h, OF_IMAGE_COLOR);
 
-    else if (key == 'n') {
-        if (GMult2 > 1) {
-            GMult2--;
-            std::cout << "channel 2 multiplier: " << GMult2 << std::endl;
-        }
-    }
-    else if (key == 'g') {
-        GMult3++;
-        std::cout << "channel 3 multiplier: " << GMult3 << std::endl;
-    }
-    else if (key == 'h') {
-        if (GMult3 > 1) {
-            GMult3--;
-            std::cout << "channel 3 multiplier: " << GMult3 << std::endl;
-        }
+        depthOFImage.crop(0, 0, w, h);
+        RGBOFImage.crop(w, 0, w, h);
+
+        this->convert3Channel8bitTo32bit(depthOFImage.getPixelsRef().getData(), w * h, revertedRawPixelsInt);
+        fillVboMesh(revertedRawPixelsInt, RGBOFImage.getPixelsRef(), h, w);
     }
 
 }
 
-void ofApp::convert16BitTo2Channel8bit(unsigned short* in, int in_size, unsigned char* out)
-{
-    for (int i = 0; i < in_size; i++) {
-        out[i * 2] = static_cast<unsigned char>(in[i] & 0xFF); // lower byte
-        out[i * 2 + 1] = static_cast<unsigned char>((in[i] >> 8) & 0xFF); // higher byte
+void ofApp::updateFromVideoFileOnSaving() {
+
+    depthVidPlayer.setPaused(true);
+
+    // update mesh
+    unsigned char* videoFrameRGB = depthVidPlayer.getPixelsRef().getPixels();
+    depthOFImage.setFromPixels(videoFrameRGB, w * 2, h, OF_IMAGE_COLOR);
+    RGBOFImage.setFromPixels(videoFrameRGB, w * 2, h, OF_IMAGE_COLOR);
+
+    depthOFImage.crop(0, 0, w, h);
+    RGBOFImage.crop(w, 0, w, h);
+
+    this->convert3Channel8bitTo32bit(depthOFImage.getPixelsRef().getData(), w * h, revertedRawPixelsInt);
+    fillVboMesh(revertedRawPixelsInt, RGBOFImage.getPixelsRef(), h, w);
+
+
+    // save mesh
+    obj_folder_path = SaveObjDialog.filePath;
+    obj_filename = obj_folder_path + "\\OBJ_data_" + to_string(depthVidPlayer.getCurrentFrame()) + ".ply";
+    pointCloud.save(obj_filename);
+
+    cout << "current frame: " << depthVidPlayer.getCurrentFrame() << " total: " << depthVidPlayer.getTotalNumFrames() << endl;
+    depthVidPlayer.setPaused(false);
+    depthVidPlayer.nextFrame();
+    depthVidPlayer.update();
+
+    if (depthVidPlayer.getCurrentFrame() == depthVidPlayer.getTotalNumFrames()) {
+        onSavingObj = false;
     }
-}
-void ofApp::convert16BitTo3Channel8bit(unsigned short* in, int in_size, unsigned char* out)
-{
-    
-    for (int i = 0; i < in_size; i++) {
-        out[i * 3] = static_cast<unsigned char>((in[i]) & 0xFF); // lower byte
-        out[i * 3 + 1] = GMult * static_cast<unsigned char>((in[i] >> 8) & 0xFF); // higher byte
-        out[i * 3 + 2] = 0;
-    }
+
 }
 
+// Methods to make data convertsions and crops
 void ofApp::convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsigned char* out)
 {
     // Input has 8 bytes, only last two ar used.
@@ -184,9 +228,9 @@ void ofApp::convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsig
  
     for (int i = 0; i < in_size; i++) {
         
-        out[i * 3 + 0] = GMult * static_cast<unsigned char>(((in[i]>>16) & 0xFF)); // lower byte
+        out[i * 3 + 0] = static_cast<unsigned char>(((in[i]>>16) & 0xFF)); // lower byte
         // 0 to 69
-        out[i * 3 + 1] = GMult2 * static_cast<unsigned char>((in[i] >> 24) & 0xFF); // higher byte
+        out[i * 3 + 1] = static_cast<unsigned char>((in[i] >> 24) & 0xFF); // higher byte
         out[i * 3 + 2] = 0;
     }
 
@@ -199,8 +243,6 @@ void ofApp::convert3Channel8bitTo32bit(unsigned char* in, int out_size, unsigned
     }
     
 }
-
-
 
 void ofApp::testConversion32bitTo3C8bit() {
 
@@ -228,64 +270,248 @@ void ofApp::testConversion32bitTo3C8bit() {
 
 }
 
+void ofApp::cropDepthData(unsigned long int* depthData) {
+    int size = h * w;
+    unsigned long int minVal = 1e5 * (unsigned long int)(minDistanceBits.get());
+    unsigned long int maxVal = 1e5 * (unsigned long int)(maxDistanceBits.get());
 
-void ofApp::draw()
-{
 
-    //depthOFImage.draw(0, 0);
-    if (!showPointCloud && currentKinect < texRGB.size())
+    for (size_t i = 0; i < size; i++)
     {
-        drawTextureAtRowAndColumn("RGB Pixels",
-            texRGB[currentKinect],
-            0, 0);
+        //cout << depthData[i] << "<" << minDistance.get() << ":::" << depthData[i] << ">" << maxDistance.get() << endl;
+        if ((depthData[i] < minVal) || (depthData[i] > maxVal)) {
+            depthData[i] = 0;
+        }
+    }
+}
 
-        drawTextureAtRowAndColumn("RGB Pixels, Registered",
-            texRGBRegistered[currentKinect],
-            1, 0);
 
-        drawTextureAtRowAndColumn("Depth Pixels, Mapped",
-            texDepth[currentKinect],
-            1, 1);
+// Methods to handle points and the mesh
+void ofApp::getPointXYZ(unsigned long int* frame, int r, int c, float& x, float& y, float& z)
+{
+    // cx: 257.244507, cy: 208.579605, fx: 365.829010, fy: 365.829010
 
-        drawTextureAtRowAndColumn("IR Pixels, Mapped",
-            texIR[currentKinect],
-            0, 1);
+    const float cx = 257.244507;
+    const float cy = 208.579605;
+    const float fx = 1 / 365.829010;
+    const float fy = 1 / 365.829010;
+
+    const float bad_point = std::numeric_limits<float>::quiet_NaN();
+    //float* undistorted_data = (float*)frame;
+    float* undistorted_data = reinterpret_cast<float*>(frame);
+
+    // 512 não deveria ser hardcoded aqui
+    const float depth_val = undistorted_data[512 * r + c] / 1000.0f; //scaling factor, so that value of 1 is one meter.
+    if (isnan(depth_val) || depth_val <= 0.001)
+    {
+        //depth value is not valid
+        x = y = z = bad_point;
     }
     else
     {
-        cam.begin();
-        ofPushMatrix();
-        ofScale(100, -100, -100);
-        pointCloud.draw();
-        ofPopMatrix();
-        cam.end();
+        x = (c + 0.5 - cx) * fx * depth_val;
+        y = (r + 0.5 - cy) * fy * depth_val;
+        z = depth_val;
+    }
+}
+
+void ofApp::fillVboMesh(unsigned long int* depthFrame, ofPixels rgbRegiteredPixels, int h, int w) {
+   
+    pointCloud.clear();
+    for (std::size_t x = 0; x < w; x++)
+    {
+        for (std::size_t y = 0; y < h; y++)
+        {
+
+            glm::vec3 position = { 0,0,0 };
+            getPointXYZ(depthFrame, y, x, position.x, position.y, position.z);
+            position.x = -position.x;
+            
+            // if in playbackmode um use the far/near crop
+            if (showPlaybackScreen) {
+
+                if ((position.z > NearMeters.get()) && (position.z < FarMeters.get())) {
+                    if ((position.x > LeftMeters.get()) && (position.x < RightMeters.get())) {
+                        if ((position.y > HighMeters.get()) && (position.y < LowMeters.get())) {
+                    
+                            
+                            pointCloud.addVertex(position);
+                            pointCloud.addColor(rgbRegiteredPixels.getColor(x, y));
+
+                        }
+                    }
+                }
+            }
+            else {
+                pointCloud.addVertex(position);
+                pointCloud.addColor(rgbRegiteredPixels.getColor(x, y));
+            }
+
+            
+        }
+    }
+}
+
+// Methods to hadle keys presses
+void ofApp::keyPressed(int key)
+{
+    if (key == 'q')
+    {
+        showDebugScreen = true;
+        showPointCloud = false;
+        showPlaybackScreen = false;
+    }
+    else if (key == 'w')
+    {
+        showDebugScreen = false;
+        showPointCloud = true;
+        showPlaybackScreen = false;
+
+    }
+    else if (key == 'e')
+    {
+        showDebugScreen = false;
+        showPointCloud = false;
+        showPlaybackScreen = true;
+        pointCloud.clear();
+    }
+    else if (key == 'r')
+    {
+        if (showPointCloud == true) {
+            onRecording = true;
+        }
+    }
+    else if (key == 'l')
+    {
+        if (showPlaybackScreen)
+        {
+            dialogResult = ofSystemLoadDialog("Load a depth video file");
+            depthVidPlayer.load(dialogResult.filePath);
+            depthVidPlayer.play();
+            depthVidPlayer.firstFrame();
+        }
+    }
+    else if (key == 's') {
+        if (showPlaybackScreen && depthVidPlayer.isLoaded()) {
+            
+            SaveObjDialog = ofSystemLoadDialog("Load a depth video file", true);
+            if (SaveObjDialog.bSuccess) {
+                depthVidPlayer.firstFrame();
+                //depthVidPlayer.stop();
+                onSavingObj = true;
+            }
+        }
+    }
+
+}
+
+// Drawing methods
+void ofApp::drawDebugScren() {
+    drawTextureAtRowAndColumn("RGB Pixels",
+        texRGB[currentKinect],
+        0, 0);
+
+    drawTextureAtRowAndColumn("RGB Pixels, Registered",
+        texRGBRegistered[currentKinect],
+        1, 0);
+
+    drawTextureAtRowAndColumn("Depth Pixels, Mapped",
+        texDepth[currentKinect],
+        1, 1);
+
+    drawTextureAtRowAndColumn("IR Pixels, Mapped",
+        texIR[currentKinect],
+        0, 1);
+}
+
+void ofApp::drawPointCloud() {
+
+    float boxDepth = 5;
+    float boxHeight = 5;
+    float boxWidth = 5;
+
+    float boxPosZ = 0;
+    float boxPosY = 0;
+    float boxPosX = 0;
+
+    if (showPointCloud) {
+        boxDepth = 4.5 - 0.5;
+        boxPosZ = (boxDepth / 2) + 0.5;
+    }
+    else if (showPlaybackScreen) {
+        boxDepth = abs(FarMeters.get() - NearMeters.get());
+        boxWidth = abs( LeftMeters.get() - RightMeters.get() );
+        boxHeight = abs( LowMeters.get() - HighMeters.get() );
+
+        
+        boxPosZ = (boxDepth / 2) + NearMeters.get();
+        boxPosX = (boxWidth / 2) + LeftMeters.get();
+        boxPosY = (boxHeight/ 2) + HighMeters.get();
+
+
+    }
+
+
+    cam.begin();
+    ofPushMatrix();
+    ofScale(100, -100, -100);
+
+    ofDrawAxis(1);
+    ofDrawGridPlane(1, 5, true);
+    pointCloud.drawVertices();
+
+    // draw referece cube
+    ofSetLineWidth(4);
+    ofNoFill();
+    ofColor(10);
+    ofDrawBox(boxPosX, boxPosY, boxPosZ, boxWidth, boxHeight, boxDepth);
+    ofFill();
+
+    ofColor(255);
+
+    //ofDrawGrid(1, 5, true, true, true, false);
+    ofPopMatrix();
+    cam.end();
+}
+
+void ofApp::draw()
+{
+    int legendBoxDist = ofGetWidth() - 150;
+    if (showDebugScreen && currentKinect < texRGB.size())
+    {
+        ofBackground(0);
+        drawDebugScren();
+        recordingGui.draw();
+        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode", legendBoxDist, 20);
+
+    }
+    else if (showPointCloud)
+    {
+        ofBackground(100);
+        drawPointCloud();
+        recordingGui.draw();
+        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode", legendBoxDist, 20);
+
+
+    }
+    else if (showPlaybackScreen) {
+
+        ofBackground(100);
+        drawPointCloud();
+        playbackGui.draw();
+        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode\nL: Load playback\nS: Save OBJ files", legendBoxDist, 20);
+
     }
 
     if (kinects.size() < 1) {
         ofDrawBitmapStringHighlight("No Kinects Detected", 40, 40);
     }
 
-    panel.draw();
+  
+
 }
 
-//
-//void ofApp::keyPressed(int key)
-//{
-//    if (key == ' ')
-//    {
-//        currentKinect = (currentKinect + 1) % kinects.size();
-//    }
-//    else if (key == 'p')
-//    {
-//        showPointCloud = !showPointCloud;
-//    }
-//}
-
-
-void ofApp::drawTextureAtRowAndColumn(const std::string& title,
-    const ofTexture& tex,
-    int row,
-    int column)
+void ofApp::drawTextureAtRowAndColumn(const std::string& title, const ofTexture& tex, int row, int column)
 {
     float displayWidth = ofGetWidth() / numColumns;
     float displayHeight = ofGetHeight() / numRows;

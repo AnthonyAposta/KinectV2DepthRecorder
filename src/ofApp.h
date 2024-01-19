@@ -13,7 +13,7 @@ public:
     void update() override;
     void draw() override;
 
-    //void keyPressed(int key) override;
+    void keyPressed(int key) override;
 
     void drawTextureAtRowAndColumn(const std::string& title,
         const ofTexture& tex,
@@ -36,25 +36,67 @@ public:
 
     ofEasyCam cam;
     ofMesh pointCloud;
-    bool showPointCloud = false;
 
-    void convert16BitTo2Channel8bit(unsigned short* in, int in_size, unsigned char* out); // not used
-    void convert16BitTo3Channel8bit(unsigned short* in, int in_size, unsigned char* out);
     void convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsigned char* out);
     void convert3Channel8bitTo32bit(unsigned char* in, int in_size, unsigned long int* out);
     void testConversion32bitTo3C8bit();
+    void getPointXYZ(unsigned long int* frame, int r, int c, float& x, float& y, float& z);
+    void fillVboMesh(unsigned long int* depthFrame, ofPixels rgbRegiteredPixels, int h, int w);
+    void cropDepthData(unsigned long int* depthData);
+    void updateFromKinect();
+    void updateFromVideoFile();
+    void drawDebugScren();
+    void drawPointCloud();
+    void updateFromVideoFileOnSaving();
 
-    unsigned char* depthFrameRGB;
     ofImage depthOFImage;
-    unsigned long int* RawPixelsInt;
+    ofImage RGBOFImage;
+    ofTexture RGBImage;
+
     ofFloatPixels RawPixelsFloat;
-    unsigned char* RawPixelsChar;
-    unsigned long int* revertedRawPixelsInt;
     ofPixels pixelsFromDepthOFImage;
 
-    void keyReleased(int key);
-    int GMult;
-    int GMult2;
-    int GMult3;
+    ofxSpout::Sender spoutSenderDepth;
+    ofxSpout::Sender spoutSenderRGB;
+
+    ofVideoPlayer depthVidPlayer;
+    ofBoxPrimitive box;
+
+    // define guis
+    ofxPanel recordingGui;
+    ofxPanel playbackGui;
+
+    ofParameter<unsigned short> minDistanceBits;
+    ofParameter<unsigned short> maxDistanceBits;
+    ofParameter<float> NearMeters;
+    ofParameter<float> FarMeters;
+    
+    ofParameter<float> HighMeters;
+    ofParameter<float> LowMeters;
+    
+    ofParameter<float> LeftMeters;
+    ofParameter<float> RightMeters;
+
+
+    // Screen controls variables
+    bool showDebugScreen = false;
+    bool onRecording = false;
+    bool showPointCloud = true;
+    bool showPlaybackScreen = false;
+
+
+    std::vector<glm::vec3> points;
+    unsigned char* depthFrameRGB;
+    unsigned long int* RawPixelsInt;
+    unsigned char* RawPixelsChar;
+    unsigned long int* revertedRawPixelsInt;
+    int h;
+    int w;
+    bool onSavingObj;
+    ofFileDialogResult dialogResult;
+    ofFileDialogResult SaveObjDialog;
+    string obj_folder_path;
+    string obj_filename;
+
 
 };
