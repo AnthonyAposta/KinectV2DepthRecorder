@@ -1,8 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34301.259
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kinectV2DepthRecorder", "kinectV2DepthRecorder.vcxproj", "{7FD42DF7-442E-479A-BA76-D0022F99702A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openframeworksLib", "..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj", "{5837595D-ACA9-485C-8E76-729040CE4B0B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DepthRecorderInstall", "..\DepthRecorderInstall\DepthRecorderInstall.vdproj", "{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,8 +32,16 @@ Global
 		{5837595D-ACA9-485C-8E76-729040CE4B0B}.Release|Win32.Build.0 = Release|Win32
 		{5837595D-ACA9-485C-8E76-729040CE4B0B}.Release|x64.ActiveCfg = Release|x64
 		{5837595D-ACA9-485C-8E76-729040CE4B0B}.Release|x64.Build.0 = Release|x64
+		{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}.Debug|Win32.ActiveCfg = Debug
+		{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}.Debug|x64.ActiveCfg = Debug
+		{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}.Release|Win32.ActiveCfg = Release
+		{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}.Release|x64.ActiveCfg = Release
+		{5CA13C27-A7FB-4A2B-9606-C49D97FA9873}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83AEBDC4-844B-45F9-B1DC-A76873AF81CE}
 	EndGlobalSection
 EndGlobal

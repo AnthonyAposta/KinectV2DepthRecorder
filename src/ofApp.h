@@ -36,6 +36,8 @@ public:
 
     ofEasyCam cam;
     ofMesh pointCloud;
+    ofMesh pointCloud2;
+
 
     void convert32BitTo3Channel8bit(unsigned long int* in, int in_size, unsigned char* out);
     void convert3Channel8bitTo32bit(unsigned char* in, int in_size, unsigned long int* out);

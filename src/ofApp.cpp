@@ -11,7 +11,13 @@ void ofApp::setup()
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(100);
+
     
+    cam.setUpAxis(glm::vec3(0, 0, 1));
+    cam.setGlobalPosition(glm::vec3(4, 0, 0));
+    cam.lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1));
+
+
     // Uncomment for verbose info from libfreenect2
     ofSetLogLevel(OF_LOG_VERBOSE);
 
@@ -334,7 +340,6 @@ void ofApp::fillVboMesh(unsigned long int* depthFrame, ofPixels rgbRegiteredPixe
                     if ((position.x > LeftMeters.get()) && (position.x < RightMeters.get())) {
                         if ((position.y > HighMeters.get()) && (position.y < LowMeters.get())) {
                     
-                            
                             pointCloud.addVertex(position);
                             pointCloud.addColor(rgbRegiteredPixels.getColor(x, y));
 
@@ -402,6 +407,13 @@ void ofApp::keyPressed(int key)
             }
         }
     }
+    else if (key == 'c')
+    {
+        dialogResult = ofSystemLoadDialog("Test mesh 2");
+        if (dialogResult.bSuccess) {
+            pointCloud2.load(dialogResult.getPath());
+        }
+    }
 
 }
 
@@ -453,13 +465,23 @@ void ofApp::drawPointCloud() {
 
 
     cam.begin();
-    ofPushMatrix();
-    ofScale(100, -100, -100);
-
+    ofScale(100, 100, 100);
+    
     ofDrawAxis(1);
+
+
+    ofPushMatrix();
+    ofRotateY(90);
     ofDrawGridPlane(1, 5, true);
+    ofPopMatrix();
+
+
+    ofPushMatrix();
+    ofRotateX(-90);
+    //pointCloud2.drawVertices();
     pointCloud.drawVertices();
 
+    ofPopMatrix();
     // draw referece cube
     ofSetLineWidth(4);
     ofNoFill();
@@ -470,7 +492,7 @@ void ofApp::drawPointCloud() {
     ofColor(255);
 
     //ofDrawGrid(1, 5, true, true, true, false);
-    ofPopMatrix();
+    
     cam.end();
 }
 
