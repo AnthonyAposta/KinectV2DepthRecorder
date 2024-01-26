@@ -81,9 +81,9 @@ public:
 
 
     // Screen controls variables
-    bool showDebugScreen = false;
+    bool showDebugScreen = true;
     bool onRecording = false;
-    bool showPointCloud = true;
+    bool showPointCloud = false;
     bool showPlaybackScreen = false;
 
 

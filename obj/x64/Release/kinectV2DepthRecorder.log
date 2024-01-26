@@ -20,10 +20,8 @@ c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\app
 c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(210): warning C4996: 'ofImage_<unsigned char>::getPixelsRef': Use getPixels() instead
   c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofimage.h(410): note: consulte a declaração de 'ofImage_<unsigned char>::getPixelsRef'
 c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(333): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(474): warning C4996: 'ofRotateY': Use ofRotateYDeg or ofRotateYRad
-  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofgraphics.h(1033): note: consulte a declaração de 'ofRotateY'
-c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(480): warning C4996: 'ofRotateX': Use ofRotateXDeg or ofRotateXRad
-  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofgraphics.h(1022): note: consulte a declaração de 'ofRotateX'
+c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(489): warning C4996: 'ofRotateZ': Use ofRotateZDeg or ofRotateZRad
+  c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\graphics\ofgraphics.h(1044): note: consulte a declaração de 'ofRotateZ'
 c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1320): warning C4267: 'argumento': conversão de 'size_t' para 'ofIndexType', possível perda de dados
   c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\libs\openframeworks\3d\ofmesh.inl(1272): note: ao compilar a função membro '<Desconhecido>' de classe <Desconhecido>
   c:\users\antho\documents\of_v0.10.1_vs2017_release\of_v0.10.1_vs2017_release\apps\myapps\kinectv2depthrecorder\src\ofapp.cpp(216): note: consulte a referência à instanciação da função modelo 'void ofMesh_<ofDefaultVertexType,ofDefaultNormalType,ofDefaultColorType,ofDefaultTexCoordType>::save(const boost::filesystem::path &,bool) const' que está sendo compilada

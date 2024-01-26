@@ -13,9 +13,9 @@ void ofApp::setup()
     ofBackground(100);
 
     
-    cam.setUpAxis(glm::vec3(0, 0, 1));
-    cam.setGlobalPosition(glm::vec3(4, 0, 0));
-    cam.lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, 1));
+    cam.setUpAxis(glm::vec3(0, -1, 0));
+    cam.setGlobalPosition(glm::vec3(0, 0, -4));
+    cam.lookAt(glm::vec3(0, 0, 0), glm::vec3(0, -1, 0));
 
 
     // Uncomment for verbose info from libfreenect2
@@ -409,9 +409,22 @@ void ofApp::keyPressed(int key)
     }
     else if (key == 'c')
     {
-        dialogResult = ofSystemLoadDialog("Test mesh 2");
-        if (dialogResult.bSuccess) {
-            pointCloud2.load(dialogResult.getPath());
+        cam.setUpAxis(glm::vec3(0, -1, 0));
+        cam.setGlobalPosition(glm::vec3(0, 0, -400));
+        cam.lookAt(glm::vec3(0, 0, 0), glm::vec3(0, -1, 0));
+    }
+    else if (key == ofKey::OF_KEY_RIGHT) {
+        if (showPlaybackScreen and depthVidPlayer.isLoaded())
+        {
+            int frame = depthVidPlayer.getCurrentFrame();
+            depthVidPlayer.setFrame(frame + 60);
+        }
+    }
+    else if (key == ofKey::OF_KEY_LEFT) {
+        if (showPlaybackScreen and depthVidPlayer.isLoaded())
+        {
+            int frame = depthVidPlayer.getCurrentFrame();
+            depthVidPlayer.setFrame(frame - 60);
         }
     }
 
@@ -465,34 +478,33 @@ void ofApp::drawPointCloud() {
 
 
     cam.begin();
-    ofScale(100, 100, 100);
-    
-    ofDrawAxis(1);
-
 
     ofPushMatrix();
-    ofRotateY(90);
+    ofScale(100, 100, 100);
+    
+    // draw axis
+    ofDrawAxis(1);
+
+    // draw grid
+    ofRotateZ(-90);
     ofDrawGridPlane(1, 5, true);
     ofPopMatrix();
 
-
     ofPushMatrix();
-    ofRotateX(-90);
-    //pointCloud2.drawVertices();
-    pointCloud.drawVertices();
+    ofScale(100, 100, 100);
 
-    ofPopMatrix();
+    // draw points
+    pointCloud.drawVertices();
+    
     // draw referece cube
     ofSetLineWidth(4);
     ofNoFill();
     ofColor(10);
     ofDrawBox(boxPosX, boxPosY, boxPosZ, boxWidth, boxHeight, boxDepth);
     ofFill();
-
     ofColor(255);
+    ofPopMatrix();
 
-    //ofDrawGrid(1, 5, true, true, true, false);
-    
     cam.end();
 }
 
@@ -504,7 +516,7 @@ void ofApp::draw()
         ofBackground(0);
         drawDebugScren();
         recordingGui.draw();
-        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode", legendBoxDist, 20);
+        ofDrawBitmapStringHighlight("Q: Debug mode\nW: Preview mode\nE: Playback mode", legendBoxDist, 20);
 
     }
     else if (showPointCloud)
@@ -512,7 +524,7 @@ void ofApp::draw()
         ofBackground(100);
         drawPointCloud();
         recordingGui.draw();
-        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode", legendBoxDist, 20);
+        ofDrawBitmapStringHighlight("Q: Debug mode\nW: Preview mode\nE: Playback mode\nC: Reset cam view", legendBoxDist, 20);
 
 
     }
@@ -521,8 +533,7 @@ void ofApp::draw()
         ofBackground(100);
         drawPointCloud();
         playbackGui.draw();
-        ofDrawBitmapStringHighlight("Q: Record mode\nW: Preview mode\nE: Playback mode\nL: Load playback\nS: Save OBJ files", legendBoxDist, 20);
-
+        ofDrawBitmapStringHighlight("Q: Debug mode\nW: Preview mode\nE: Playback mode\nL: Load playback\nS: Save OBJ files\nC: Reset cam view\n->: Forward\n<-: Backward  ", legendBoxDist, 20);
     }
 
     if (kinects.size() < 1) {
